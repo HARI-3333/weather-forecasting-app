@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast App</title>
+
+    <style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+
+    background-image: url('{{ image_url }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: -1;
+}
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3730a3;
+        }
+
+        .weather-card {
+            margin-top: 20px;
+        }
+
+        .city {
+            font-size: 26px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .temp {
+            font-size: 45px;
+            font-weight: bold;
+            color: #4f46e5;
+            margin: 10px 0;
+        }
+
+        .desc {
+            font-size: 18px;
+            text-transform: capitalize;
+            color: #555;
+        }
+
+        .date {
+            margin-top: 10px;
+            color: #777;
+        }
+
+        img.weather-icon {
+            width: 100px;
+        }
+
+        .city-img {
+            margin-top: 20px;
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Weather Forecast</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="weather-card">
+            <div class="city">{{ city }}</div>
+
+            {% if icon %}
+                <img class="weather-icon" src="https://openweathermap.org/img/wn/{{ icon }}@2x.png" alt="Weather Icon">
+            {% endif %}
+
+            <div class="temp">{{ temp }}°C</div>
+            <div class="desc">{{ description }}</div>
+            <div class="date">Date: {{ day }}</div>
+
+            {% if image_url %}
+                <img class="city-img" src="{{ image_url }}" alt="City Image">
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
